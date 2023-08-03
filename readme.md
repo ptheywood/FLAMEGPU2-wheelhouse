@@ -4,9 +4,10 @@ Repository for generating and hosting a python wheelhouse, for non pypi complian
 
 `main` contains:
 
-+ `scripts/get_data.sh` - uses `gh` to query the `FLAMEGPU/FLAMEGPU2` repository for releases, and then for previously unknown releases builds a list of assets. 
-+ `scripts/build_wheelhouse.sh` - Provided a json file of .whl names and paths, generate a html file compliant with `pip install`'s `-f, --find-links <url>` option:
-    ```
++ `scripts/get_release_json.py` - uses `gh` to query the `FLAMEGPU/FLAMEGPU2` repository for releases and their assets, storing to JSON on disk
++ `scripts/build_wheelhouse.sh` - Generate a html file compliant with `pip install`'s `-f, --find-links <url>` option from the previously stored JSON
+
+    ```text
     -f, --find-links <url>      If a URL or path to an html file, 
     then parse for links to archives such as sdist (.tar.gz) or wheel (.whl) files. 
     If a local path or file:// URL that's a directory, 
@@ -18,13 +19,13 @@ Via GitHub actions, these scripts can be executed, and the resulting HTML file(s
 
 ## Dependencies
 
-+ `bash`
++ `python3` (>= 3.6)
 + `gh`
 
-## Todo 
+## Todo
 
-+ [ ] Implement basic `scripts/get_data.sh`
-+ [ ] Implement basic `scripts/build_wheelhouse.sh`
++ [x] Implement basic `scripts/get_release_json.py`
++ [x] Implement basic `scripts/build_wheelhouse.py`
 + [ ] Implement CI
 + [ ] Decide on vis vs non-vis wheelhouse files?
 + [ ] Decide on hosting URI(s)
