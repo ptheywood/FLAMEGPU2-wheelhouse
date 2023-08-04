@@ -1,0 +1,57 @@
+name: CI
+
+# Trigger the workflow on pushes to main, pull requests, manual workflow dispatches, or API based repository_dispatch events
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+# 2 jobs.
+# + Run the scripts to make sure they work, saving html as an artifact
+# + If a deploy is needed, save teh html to the gh pages branch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository
+    - uses: actions/checkout@v3
+    # Build JSON
+    - name: Construct Json
+      run: python3 scripts/get_release_json.py data.json
+    # Build HTML
+    - name: Build HTML
+      run: mkdir -p wheelhouse && python3 scripts/build_wheelhouse.py -i data.json -o wheelhouse/index.html
+    # Save HTML for later
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ./wheelhouse
+
+  # If this should deploy to the github pages branch, do so.
+  # This requires "GitHub Actions" selected in github.com/org/repo/settings/pages
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
