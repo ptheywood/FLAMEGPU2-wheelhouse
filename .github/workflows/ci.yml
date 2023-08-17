@@ -35,7 +35,7 @@ jobs:
       run: python3 scripts/get_release_json.py data.json
     # Build HTML
     - name: Build HTML
-      run: mkdir -p wheelhouse && python3 scripts/build_wheelhouse.py -i data.json -o wheelhouse/index.html
+      run: mkdir -p wheelhouse && python3 scripts/build_wheelhouse.py -i data.json -o wheelhouse
     # Save HTML for later
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
