@@ -27,5 +27,3 @@ Via GitHub actions, these scripts can be executed, and the resulting HTML file(s
 ## CI
 
 The included ci workflow runs the included scripts, and on certain events deploys to gh pages.
-
-Depl
