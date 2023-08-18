@@ -1,13 +1,12 @@
 name: CI
 
-# Trigger the workflow on pushes to main, pull requests, manual workflow dispatches, or API based repository_dispatch events
+# Trigger the workflow on pushes to main, pull requests or workflow dispatches
 on:
   push:
     branches:
       - main
   pull_request:
   workflow_dispatch:
-  repository_dispatch:
 
 permissions:
   contents: read
@@ -23,7 +22,7 @@ env:
 
 # 2 jobs.
 # + Run the scripts to make sure they work, saving html as an artifact
-# + If a deploy is needed, save teh html to the gh pages branch
+# + If a deploy is needed, save the html to the gh pages branch
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,10 +41,10 @@ jobs:
       with:
         path: ./wheelhouse
 
-  # If this should deploy to the github pages branch, do so.
+  # If this should deploy (push or workflow dispatch on main) to the github pages branch, do so.
   # This requires "GitHub Actions" selected in github.com/org/repo/settings/pages
   deploy:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+    if: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'push' ) && github.ref == 'refs/heads/main' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
