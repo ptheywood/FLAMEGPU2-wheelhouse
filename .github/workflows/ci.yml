@@ -8,15 +8,18 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Set permissions on the github.token for gh-pages use
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Enable publication to gh pages via actions/deploy-pages@v2
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Enable use of gh
 env:
   GH_TOKEN: ${{ github.token }}
 
