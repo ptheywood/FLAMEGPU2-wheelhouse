@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Provided a path to a JSON file containing per release wheel names and URLS, output a html wheelhouse for pip consumption via -f, --find-links <url> or --index-url <url>
+Provided a path to a JSON file containing per release wheel names and URLS, output a html wheelhouse for pip consumption via -f, --find-links <url> or --extra-index-url <url>
 """
 
 import argparse
@@ -106,7 +106,7 @@ def write_installation_instructions(filepath, sample_package, descriptions):
     i_tr_list = []
     f_tr_list = []
     for desc, i_uri, f_uri in descriptions:
-        i_tr_list.append(f"        <tr><td>{desc}/</td><td><code>python3 -m pip install --index-url {i_uri} {sample_package}</code></td></tr>")
+        i_tr_list.append(f"        <tr><td>{desc}/</td><td><code>python3 -m pip install --extra-index-url {i_uri} {sample_package}</code></td></tr>")
         f_tr_list.append(f"        <tr><td>{desc}/</td><td><code>python3 -m pip install --find-links {f_uri} {sample_package}</code></td></tr>")
     i_tablerows = "\n".join(i_tr_list)
     f_tablerows = "\n".join(f_tr_list)
@@ -117,8 +117,8 @@ def write_installation_instructions(filepath, sample_package, descriptions):
   </head>
   <body>
     <h1><code>pyflamegpu</code> Wheels</h1>
-    <p><code>pyflamegpu</code> wheels can be installed via pip using the <code>-i, --index-url<code>, <code>--extra-index-url<code> or <code>-f, --find-links</code> arguments, and one of the uri's provided.<p>
-    <h2>Using <code>-i, --index-url<code>, <code>--extra-index-url<code></h2>
+    <p><code>pyflamegpu</code> wheels can be installed via pip using the <code>--extra-index-url<code> or <code>-f, --find-links</code> arguments, and one of the uri's provided.<p>
+    <h2>Using <code>--extra-index-url<code></h2>
     <table style="text-align:left;">
         <tr>
             <th>Description</th>
